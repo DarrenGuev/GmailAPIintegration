@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block Head %}
+  <meta charset="UTF-8">
+  <title>Inbox</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+
+{% block Body %}
+  <h1>Inbox (Last 5 Emails)</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Sender</th>
+        <th>Email</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mail in emails %}
+      <tr>
+        <td>{{ mail.name }}</td>
+        <td>{{ mail.email }}</td>
+        <td>{{ mail.date }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="/">⬅ Back</a>
+{% endblock %}

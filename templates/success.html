@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block Head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>Email Sent</title>
+{% endblock %}
+
+{% block Body %}
+  <h1>✅ Email sent successfully!</h1>
+  <p>Your message was sent to: <b>{{ to_email }}</b></p>
+  <br>
+  <a href="/inbox"><button>📥 View Inbox</button></a>
+  <br><br>
+  <a href="/"><button>✉ Send Another Email</button></a>
+{% endblock %}
