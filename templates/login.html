@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}" />
+    <title>EZ Mail - Login</title>
+</head>
+
+<body>
+    <div class="background">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="form-section">
+                    <form action="/login" method="POST" class="login-form">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+
+                        <button type="submit" class="sign-in-btn">Sign in</button>
+
+                        {% if error %}
+                        <div class="error-message">{{ error }}</div>
+                        {% endif %}
+                    </form>
+                </div>
+
+                <div class="brand-section">
+                    <h1 class="brand-title">EZ<span class="brand-highlight"> Mail</span></h1>
+                    <p class="brand-description">A fast, secure, and user-friendly web mail app designed to keep you
+                        connected anytime, anywhere. Enjoy a clean interface, smart inbox management, and reliable
+                        communication—all in one place.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
