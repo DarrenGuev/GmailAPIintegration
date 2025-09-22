@@ -1,19 +1,88 @@
 {% extends "base.html" %}
 
 {% block Head %}
-  <title>Email App</title>
-  <link rel="stylesheet" href="/static/style.css">
-  <!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
+  <title>EZ Mail - Student Mailer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Judson&display=swap" rel="stylesheet" />
 {% endblock %}
 
 {% block Body %}
-  <h1>Send Gmail</h1>
-  <form action="/send" method="post">
-    <input type="email" name="to" placeholder="Recipient Email" required><br><br>
-    <input type="text" name="subject" placeholder="Subject" required><br><br>
-    <textarea name="message" placeholder="Message" rows="5" cols="30"></textarea><br><br>
-    <button type="submit">Send</button>
-  </form>
-  <br>
-  <a href="/inbox"><button>View Inbox</button></a>
+  <div class="v6_2">
+    <div class="v58_20"></div>
+    <div class="v8_12">
+      <span class="v8_13">EZ mail</span>
+      <!-- Inbox and Profile Container -->
+      <div class="top-right-nav">
+        <a href="/inbox" class="inbox-nav">Inbox</a>
+        <div class="profile-container">
+          <div class="profile-icon" onclick="toggleDropdown()">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="8" r="4" fill="currentColor"/>
+              <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="dropdown-menu" id="profileDropdown">
+            <div class="dropdown-header">
+              <div class="user-avatar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="8" r="4" fill="currentColor"/>
+                  <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="user-info">
+                <div class="user-email">{{ session.user_email }}</div>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="/logout" class="dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="v75_13">
+      <span class="v13_8">Student Mailer</span>
+      <form action="/send" method="post" style="position: relative;">
+        <span class="v13_509">Subject:</span>
+        <input type="text" name="subject" class="v13_506" style="top: 355px; left: 325px; width: 400px;" placeholder="Enter subject" required>
+        
+        <span class="v13_505">Recipient:</span>
+        <input type="email" name="to" class="v13_506" style="top: 395px; left: 325px; width: 400px;" placeholder="Enter recipient email" required>
+        
+        <span class="v13_513">Message:</span>
+        <textarea name="message" class="v13_511" placeholder="Enter your message" required></textarea>
+        
+        <div class="v75_16">
+          <button type="submit" class="v73_11">SEND</button>
+        </div>
+      </form>
+      <div class="v75_18">
+        <a href="/inbox" class="v73_12">INBOX</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById('profileDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    window.onclick = function(event) {
+      if (!event.target.matches('.profile-icon') && !event.target.closest('.profile-icon')) {
+        const dropdown = document.getElementById('profileDropdown');
+        if (dropdown.classList.contains('show')) {
+          dropdown.classList.remove('show');
+        }
+      }
+    }
+  </script>
 {% endblock %}
