@@ -29,7 +29,7 @@ body {
 }
 .v8_12 {
   width: 100%;
-  height: 188px;
+  height: 150px;
   background: rgba(113,1,23,1);
   opacity: 1;
   position: relative;
@@ -41,13 +41,13 @@ body {
   width: 100%;
   color: rgba(236,213,187,1);
   position: absolute;
-  top: 50px;
-  left: 0px;
+  top: 30px;
+  left: 50px;
   font-family: Lato;
   font-weight: 900;
   font-size: 48px;
   opacity: 1;
-  text-align: center;
+  text-align: left;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
@@ -82,11 +82,12 @@ body {
 
 .inbox-nav {
   color: rgba(236, 213, 187, 1);
+  margin-top: 20px;
   text-decoration: none;
   font-family: 'Lato', sans-serif;
   font-weight: 700;
   font-size: 18px;
-  padding: 12px 24px;
+  padding: 20px 40px;
   background: rgba(236, 213, 187, 0.1);
   border-radius: 25px;
   border: 2px solid rgba(236, 213, 187, 0.3);
@@ -270,9 +271,10 @@ input[name="to"].v13_506 {
 }
 
 .profile-icon {
-  width: 56px;
-  height: 56px;
+  width: 75px;
+  height: 75px;
   background: rgba(236, 213, 187, 0.9);
+  margin-top: 15px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -369,7 +371,17 @@ input[name="to"].v13_506 {
   color: rgba(113, 1, 23, 0.7);
 }
 
-/* Responsive adjustments */
+/* Override Bootstrap form styles to match design */
+.form-control:focus {
+  border-color: rgba(113,1,23,0.5);
+  box-shadow: 0 0 0 0.2rem rgba(113,1,23,0.25);
+}
+
+.form-label {
+  margin-bottom: 0.75rem;
+}
+
+/* Ensure card responsiveness */
 @media (max-width: 768px) {
   .top-right-nav {
     top: 15px;
@@ -399,6 +411,19 @@ input[name="to"].v13_506 {
   .dropdown-item {
     padding: 12px 15px;
   }
+  
+  .card-body {
+    padding: 2rem !important;
+  }
+  
+  .card-title {
+    font-size: 2rem !important;
+  }
+  
+  .btn-lg {
+    font-size: 1rem !important;
+    padding: 0.75rem 1.5rem !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -422,4 +447,25 @@ input[name="to"].v13_506 {
     min-width: 200px;
     right: -20px;
   }
+  
+  .card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .card-title {
+    font-size: 1.75rem !important;
+  }
+  
+  .container {
+    padding: 20px 15px !important;
+  }
+}
+
+/* Remove old form styles that conflict with Bootstrap */
+.v75_13 {
+  display: none;
+}
+
+.v13_8, .v13_513, .v13_509, .v13_511, .v13_505, .v13_506, .v75_16, .v75_18, .v73_11, .v73_12 {
+  display: none;
 }
