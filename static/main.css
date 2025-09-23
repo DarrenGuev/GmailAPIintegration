@@ -7,7 +7,8 @@ body {
 .v6_2 {
   width: 100%;
   height: 1024px;
-  background: rgba(255,255,255,1);
+  background: url("/static/images/v13_432.png") no-repeat center center;
+  background-size: cover;
   opacity: 1;
   position: relative;
   top: 0px;
@@ -15,17 +16,7 @@ body {
   overflow: hidden;
 }
 .v58_20 {
-  width: 100%;
-  height: 836px;
-  background: url("/static/images/v13_432.png");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  opacity: 1;
-  position: absolute;
-  top: 188px;
-  left: 2px;
-  overflow: hidden;
+  display: none;
 }
 .v8_12 {
   width: 100%;
@@ -36,6 +27,7 @@ body {
   top: 0px;
   left: 0px;
   overflow: hidden;
+  z-index: 10;
 }
 .v8_13 {
   width: 100%;
@@ -462,6 +454,13 @@ input[name="to"].v13_506 {
 }
 
 /* Remove old form styles that conflict with Bootstrap */
+.v75_13 {
+  display: none;
+}
+
+.v13_8, .v13_513, .v13_509, .v13_511, .v13_505, .v13_506, .v75_16, .v75_18, .v73_11, .v73_12 {
+  display: none;
+}
 .v75_13 {
   display: none;
 }
