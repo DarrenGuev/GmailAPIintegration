@@ -1,0 +1,359 @@
+/* Inbox specific styles */
+.inbox-container {
+  width: 100%;
+  max-width: 900px;
+  background: rgba(236, 213, 187, 1);
+  border-radius: 25px;
+  min-height: 600px;
+  margin-bottom: 50px;
+}
+
+.inbox-title {
+  color: rgba(113, 1, 23, 1);
+  font-family: Judson, serif;
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+/* Search box styles */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 50px 12px 15px;
+  border-radius: 10px;
+  border: 2px solid rgba(156, 142, 129, 1);
+  font-family: Judson, serif;
+  font-size: 1rem;
+  background-color: #fff;
+  color: rgba(77, 70, 70, 1);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: rgba(113, 1, 23, 0.5);
+  box-shadow: 0 0 0 2px rgba(113, 1, 23, 0.25);
+}
+
+.search-button {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: rgba(113, 1, 23, 0.7);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.search-button:hover {
+  background-color: rgba(113, 1, 23, 0.1);
+  color: rgba(113, 1, 23, 1);
+}
+
+/* Email list styles */
+.email-list {
+  margin-top: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.email-item {
+  display: flex;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(156, 142, 129, 0.3);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.email-item:hover {
+  background-color: rgba(236, 213, 187, 0.2);
+}
+
+.email-item:last-child {
+  border-bottom: none;
+}
+
+.email-sender {
+  display: flex;
+  align-items: center;
+  width: 180px;
+  margin-right: 15px;
+  overflow: hidden;
+}
+
+.sender-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(113, 1, 23, 0.8);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Lato, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.sender-name {
+  font-family: Judson, serif;
+  font-size: 16px;
+  color: rgba(77, 70, 70, 1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email-content {
+  flex-grow: 1;
+  overflow: hidden;
+  margin-right: 15px;
+}
+
+.email-subject {
+  font-family: Judson, serif;
+  font-weight: bold;
+  font-size: 16px;
+  color: rgba(77, 70, 70, 1);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email-snippet {
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  color: rgba(77, 70, 70, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email-date {
+  width: 80px;
+  text-align: right;
+  font-family: Lato, sans-serif;
+  font-size: 13px;
+  color: rgba(77, 70, 70, 0.7);
+  white-space: nowrap;
+}
+
+/* Empty state */
+.no-emails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  color: rgba(77, 70, 70, 0.7);
+}
+
+.no-emails-icon {
+  margin-bottom: 15px;
+}
+
+.no-emails-text {
+  font-family: Judson, serif;
+  font-size: 18px;
+}
+
+/* Pagination styles */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 0 10px;
+}
+
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background-color: rgba(123, 109, 84, 1);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: Lato, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: rgba(123, 109, 84, 0.85);
+}
+
+.pagination-btn:disabled {
+  background-color: rgba(123, 109, 84, 0.4);
+  cursor: not-allowed;
+}
+
+.page-indicator {
+  font-family: Judson, serif;
+  font-size: 16px;
+  color: rgba(77, 70, 70, 1);
+}
+
+/* Additional styles to match Inbox.png layout */
+.inbox-card {
+  max-width: 1100px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* orange rounded header */
+.inbox-header {
+  background: linear-gradient(90deg, #f6b36b 0%, #f4a34a 100%);
+  color: rgba(77, 70, 70, 1);
+  padding: 18px 20px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  height: 72px;
+  align-items: center;
+  gap: 12px;
+}
+
+.inbox-header .header-left {
+  font-family: 'Judson', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.inbox-header .header-center {
+  font-family: 'Judson', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  flex: 1;
+}
+
+.inbox-header .header-right {
+  min-width: 80px;
+  text-align: right;
+}
+
+/* left list */
+.inbox-left {
+  background: rgba(255, 255, 255, 0.98);
+  min-height: 380px;
+}
+
+.email-row {
+  text-align: left;
+  border-radius: 0;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(156, 142, 129, 0.25);
+  background: transparent;
+  color: rgba(77, 70, 70, 1);
+}
+
+.email-row:hover {
+  background: rgba(236, 213, 187, 0.15);
+}
+
+.email-row.active {
+  background: rgba(236, 213, 187, 0.25);
+  font-weight: 600;
+}
+
+/* right preview */
+.inbox-right {
+  background: rgba(239, 224, 213, 0.95);
+  min-height: 380px;
+  color: rgba(77, 70, 70, 1);
+}
+
+/* preview header */
+.preview-meta h5 {
+  font-family: 'Judson', serif;
+  font-weight: 700;
+  color: rgba(113, 1, 23, 1);
+}
+
+/* small responsive tweaks */
+@media (max-width: 767.98px) {
+  .inbox-header .header-center {
+    font-size: 1rem;
+  }
+  .inbox-left {
+    min-height: 200px;
+  }
+  .inbox-right {
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .inbox-container {
+    max-width: 95%;
+    margin: 0 auto;
+  }
+  
+  .email-sender {
+    width: 60px;
+  }
+  
+  .sender-name {
+    display: none;
+  }
+  
+  .email-date {
+    width: 60px;
+    font-size: 12px;
+  }
+  
+  .inbox-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .inbox-container {
+    border-radius: 15px;
+  }
+  
+  .email-item {
+    padding: 12px 15px;
+  }
+  
+  .sender-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  
+  .email-subject {
+    font-size: 14px;
+  }
+  
+  .email-snippet {
+    font-size: 12px;
+  }
+  
+  .pagination-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .inbox-title {
+    font-size: 1.8rem;
+  }
+}
