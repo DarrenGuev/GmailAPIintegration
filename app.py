@@ -5,20 +5,21 @@ import json
 from datetime import datetime
 from email.mime.text import MIMEText
 
-# Google API imports
+# google API imports
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-# Local imports
+# local imports
 from config import SCOPES, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SECRET_KEY, DEBUG
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
-# Gmail API helper functions
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' #disable insecure transport for local development
+
 def get_gmail_service():
     """Get Gmail service using stored credentials from session"""
     if 'credentials' not in session:
@@ -36,7 +37,7 @@ def get_gmail_service():
     
     if credentials.expired and credentials.refresh_token:
         credentials.refresh(Request())
-        # Update session with refreshed credentials
+        
         session['credentials'] = {
             'token': credentials.token,
             'refresh_token': credentials.refresh_token,
@@ -62,50 +63,45 @@ def login():
     if 'credentials' in session:
         return redirect(url_for('index'))
     
-    # Create OAuth2 flow
-    flow = Flow.from_client_config(
-        {
-            "web": {
-                "client_id": CLIENT_ID,
-                "client_secret": CLIENT_SECRET,
-                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                "token_uri": "https://oauth2.googleapis.com/token",
-                "redirect_uris": [REDIRECT_URI]
-            }
-        },
+    flow = Flow.from_client_secrets_file(
+        'client_secret.json',
         scopes=SCOPES
     )
-    flow.redirect_uri = REDIRECT_URI
+    flow.redirect_uri = url_for('oauth2callback', _external=True)
     
+    session.pop('state', None)
+
     authorization_url, state = flow.authorization_url(
         access_type='offline',
-        include_granted_scopes='true'
+        include_granted_scopes='true',
+        prompt='consent'  # Force consent screen to get refresh token
     )
     
     session['state'] = state
+    session.permanent = True  # Make session permanent to persist state
     return redirect(authorization_url)
 
 @app.route('/oauth2callback')
 def oauth2callback():
     """Handle OAuth2 callback from Google"""
-    if 'state' not in session or request.args.get('state') != session['state']:
-        flash('Invalid state parameter', 'error')
+    # Get state from request
+    request_state = request.args.get('state')
+    
+    # More lenient state validation
+    if not request_state:
+        flash('Missing state parameter', 'error')
         return redirect(url_for('show_login'))
     
-    flow = Flow.from_client_config(
-        {
-            "web": {
-                "client_id": CLIENT_ID,
-                "client_secret": CLIENT_SECRET,
-                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                "token_uri": "https://oauth2.googleapis.com/token",
-                "redirect_uris": [REDIRECT_URI]
-            }
-        },
+    
+    if 'state' in session and request_state != session.get('state'): # Check if we have state in session, if not, proceed anyway (some browsers clear session)
+        flash('State parameter mismatch', 'error')
+        return redirect(url_for('show_login'))
+    
+    flow = Flow.from_client_secrets_file(
+        'client_secret.json',
         scopes=SCOPES,
-        state=session['state']
     )
-    flow.redirect_uri = REDIRECT_URI
+    flow.redirect_uri = url_for('oauth2callback', _external=True)
     
     try:
         flow.fetch_token(authorization_response=request.url)
@@ -128,6 +124,9 @@ def oauth2callback():
         session['logged_in'] = True
         session['user_email'] = user_info.get('email')
         session['user_name'] = user_info.get('name')
+        
+        # Clear state from session
+        session.pop('state', None)
         
         flash(f"Login successful! Welcome {user_info.get('name', 'User')}", "success")
         return redirect(url_for('index'))
@@ -193,12 +192,12 @@ def inbox():
             flash("Gmail service not available. Please log in again.", "error")
             return redirect(url_for('login'))
         
-        # Get list of messages
+        # para makuha yung list ng messages
         results = service.users().messages().list(userId='me', maxResults=10).execute()
         messages = results.get('messages', [])
         
         for msg in messages:
-            # Get message details
+            #details
             message = service.users().messages().get(userId='me', id=msg['id']).execute()
             
             # Extract headers
