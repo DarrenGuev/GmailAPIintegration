@@ -278,6 +278,19 @@ input[name="to"].v13_506 {
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
 }
 
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.avatar-img.small {
+  width: 40px;
+  height: 40px;
+}
+
 .profile-icon:hover {
   background: rgba(236, 213, 187, 1);
   transform: scale(1.05);
@@ -334,6 +347,24 @@ input[name="to"].v13_506 {
   font-size: 14px;
   color: rgba(77, 70, 70, 1);
   font-weight: 500;
+}
+
+.logout-chip {
+  margin-left: auto;
+  padding: 6px 12px;
+  background: rgba(113, 1, 23, 0.9);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 999px;
+  font-family: 'Lato', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.logout-chip:hover {
+  background: rgba(113, 1, 23, 1);
+  transform: translateY(-1px);
 }
 
 .dropdown-divider {

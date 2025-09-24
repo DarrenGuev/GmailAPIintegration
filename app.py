@@ -124,6 +124,7 @@ def oauth2callback():
         session['logged_in'] = True
         session['user_email'] = user_info.get('email')
         session['user_name'] = user_info.get('name')
+        session['user_picture'] = user_info.get('picture')
         
         # Clear state from session
         session.pop('state', None)
@@ -149,7 +150,7 @@ def index():
 @app.route("/logout")
 def logout():
     session.clear()
-    flash("You have been logged out successfully.", "info")
+    # flash("You have been logged out successfully.", "info")
     return redirect(url_for('show_login'))
 
 @app.route("/send", methods=["POST"])

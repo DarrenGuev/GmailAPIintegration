@@ -23,44 +23,53 @@
       <a href="/inbox" class="inbox-nav">Inbox</a>
       <div class="profile-container">
         <div class="profile-icon" onclick="toggleDropdown()">
-          <svg
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="12" cy="8" r="4" fill="currentColor" />
-            <path
-              d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
+          {% if session.user_picture %}
+            <img src="{{ session.user_picture }}" alt="avatar" class="avatar-img" />
+          {% else %}
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="12" cy="8" r="4" fill="currentColor" />
+              <path
+                d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          {% endif %}
         </div>
         <div class="dropdown-menu" id="profileDropdown">
           <div class="dropdown-header">
             <div class="user-avatar">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="12" cy="8" r="4" fill="currentColor" />
-                <path
-                  d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
+              {% if session.user_picture %}
+                <img src="{{ session.user_picture }}" alt="avatar" class="avatar-img small" />
+              {% else %}
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="12" cy="8" r="4" fill="currentColor" />
+                  <path
+                    d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              {% endif %}
             </div>
             <div class="user-info">
               <div class="user-email">{{ session.user_email }}</div>
             </div>
+            <a href="/logout" class="logout-chip" title="Logout">Logout</a>
           </div>
           <div class="dropdown-divider"></div>
           <a href="/logout" class="dropdown-item">
