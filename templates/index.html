@@ -1,18 +1,9 @@
 {% extends "base.html" %} {% block Head %}
 <title>EZ Mail - Student Mailer</title>
-<link
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-  rel="stylesheet"
-/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
-<link
-  href="https://fonts.googleapis.com/css?family=Lato&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://fonts.googleapis.com/css?family=Judson&display=swap"
-  rel="stylesheet"
-/>
+<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Judson&display=swap" rel="stylesheet" />
 {% endblock %} {% block Body %}
 <div class="v6_2">
   <div class="v58_20"></div>
@@ -20,87 +11,50 @@
     <span class="v8_13">EZ mail</span>
     <!-- Inbox and Profile Container -->
     <div class="top-right-nav">
-      <a href="/inbox" class="inbox-nav">Inbox</a>
+      <div class="home-container">
+        <div class="home-nav" onclick="toggleHomeDropdown()">
+          Home
+        </div>
+        <div class="dropdown-menu" id="homeDropdown">
+          <a href="/inbox" class="dropdown-item">Inbox</a>
+        </div>
+      </div>
       <div class="profile-container">
         <div class="profile-icon" onclick="toggleDropdown()">
           {% if session.user_picture %}
-            <img src="{{ session.user_picture }}" alt="avatar" class="avatar-img" />
+          <img src="{{ session.user_picture }}" alt="avatar" class="avatar-img" />
           {% else %}
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="12" cy="8" r="4" fill="currentColor" />
-              <path
-                d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-            </svg>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="8" r="4" fill="currentColor" />
+            <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" />
+          </svg>
           {% endif %}
         </div>
         <div class="dropdown-menu" id="profileDropdown">
           <div class="dropdown-header">
             <div class="user-avatar">
               {% if session.user_picture %}
-                <img src="{{ session.user_picture }}" alt="avatar" class="avatar-img small" />
+              <img src="{{ session.user_picture }}" alt="avatar" class="avatar-img small" />
               {% else %}
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="12" cy="8" r="4" fill="currentColor" />
-                  <path
-                    d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
-                </svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="8" r="4" fill="currentColor" />
+                <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" />
+              </svg>
               {% endif %}
             </div>
             <div class="user-info">
               <div class="user-email">{{ session.user_email }}</div>
             </div>
-            <a href="/logout" class="logout-chip" title="Logout">Logout</a>
-          </div>
+          </div>  
           <div class="dropdown-divider"></div>
           <a href="/logout" class="dropdown-item">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-              <polyline
-                points="16,17 21,12 16,7"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-              <line
-                x1="21"
-                y1="12"
-                x2="9"
-                y2="12"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" />
+              <polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
             </svg>
             Logout
           </a>
@@ -110,121 +64,73 @@
   </div>
 
   <!-- Bootstrap Card Container -->
-  <div
-    class="container d-flex justify-content-center align-items-center"
-    style="min-height: 70vh; padding-top: 50px"
-  >
-    <div
-      class="card shadow-lg"
-      style="
+  <div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh; padding-top: 50px">
+    <div class="card shadow-lg" style="
         width: 100%;
         max-width: 600px;
         border-radius: 25px;
         background: rgba(236, 213, 187, 1);
         border: none;
-      "
-    >
+      ">
       <div class="card-body p-5">
-        <h2
-          class="card-title text-center mb-4"
-          style="
+        <h2 class="card-title text-center mb-4" style="
             color: rgba(113, 1, 23, 1);
             font-family: Judson;
             font-weight: bold;
             font-size: 2.5rem;
-          "
-        >
+          ">
           Student Mailer
         </h2>
 
         <form action="/send" method="post">
           <div class="mb-4">
-            <label
-              for="subject"
-              class="form-label"
-              style="
+            <label for="subject" class="form-label" style="
                 color: rgba(77, 70, 70, 1);
                 font-family: Judson;
                 font-weight: 500;
                 font-size: 1.1rem;
-              "
-              >Subject:</label
-            >
-            <input
-              type="text"
-              class="form-control form-control-lg"
-              id="subject"
-              name="subject"
-              placeholder="Enter subject"
-              required
-              style="
+              ">Subject:</label>
+            <input type="text" class="form-control form-control-lg" id="subject" name="subject"
+              placeholder="Enter subject" required style="
                 border-radius: 10px;
                 border: 2px solid rgba(156, 142, 129, 1);
                 font-family: Judson;
-              "
-            />
+              " />
           </div>
 
           <div class="mb-4">
-            <label
-              for="recipient"
-              class="form-label"
-              style="
+            <label for="recipient" class="form-label" style="
                 color: rgba(77, 70, 70, 1);
                 font-family: Judson;
                 font-weight: 500;
                 font-size: 1.1rem;
-              "
-              >Recipient:</label
-            >
-            <input
-              type="email"
-              class="form-control form-control-lg"
-              id="recipient"
-              name="to"
-              placeholder="Enter recipient email"
-              required
-              style="
+              ">Recipient:</label>
+            <input type="email" class="form-control form-control-lg" id="recipient" name="to"
+              placeholder="Enter recipient email" required style="
                 border-radius: 10px;
                 border: 2px solid rgba(156, 142, 129, 1);
                 font-family: Judson;
-              "
-            />
+              " />
           </div>
 
           <div class="mb-4">
-            <label
-              for="message"
-              class="form-label"
-              style="
+            <label for="message" class="form-label" style="
                 color: rgba(77, 70, 70, 1);
                 font-family: Judson;
                 font-weight: 500;
                 font-size: 1.1rem;
-              "
-              >Message:</label
-            >
-            <textarea
-              class="form-control"
-              id="message"
-              name="message"
-              rows="5"
-              placeholder="Enter your message"
-              required
-              style="
+              ">Message:</label>
+            <textarea class="form-control" id="message" name="message" rows="5" placeholder="Enter your message"
+              required style="
                 border-radius: 10px;
                 border: 2px solid rgba(156, 142, 129, 1);
                 font-family: Judson;
                 resize: vertical;
-              "
-            ></textarea>
+              "></textarea>
           </div>
 
           <div class="d-grid gap-3 d-md-flex justify-content-md-center">
-            <button
-              type="submit"
-              class="btn btn-lg px-4"
-              style="
+            <button type="submit" class="btn btn-lg px-4" style="
                 background-color: rgba(84, 98, 123, 1);
                 border: none;
                 border-radius: 13px;
@@ -232,14 +138,10 @@
                 font-family: Lato;
                 font-weight: bold;
                 font-size: 1.2rem;
-              "
-            >
+              ">
               SEND
             </button>
-            <a
-              href="/inbox"
-              class="btn btn-lg px-4"
-              style="
+            <a href="/inbox" class="btn btn-lg px-4" style="
                 background-color: rgba(123, 109, 84, 1);
                 border: none;
                 border-radius: 13px;
@@ -248,8 +150,7 @@
                 font-weight: bold;
                 font-size: 1.2rem;
                 text-decoration: none;
-              "
-            >
+              ">
               INBOX
             </a>
           </div>
@@ -261,10 +162,20 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  function toggleHomeDropdown() {
+    document.getElementById("homeDropdown").classList.toggle("show");
+  }
+
   function toggleDropdown() {
     const dropdown = document.getElementById("profileDropdown");
     dropdown.classList.toggle("show");
   }
+  window.addEventListener('click', function (event) {
+    const dropdown = document.getElementById("homeDropdown");
+    if (!event.target.closest('.home-container')) {
+      dropdown.classList.remove('show');
+    }
+  });
 
   // Close dropdown when clicking outside
   window.onclick = function (event) {

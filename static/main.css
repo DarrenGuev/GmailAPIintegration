@@ -1,10 +1,9 @@
 * {
   box-sizing: border-box;
 }
+
 body {
   font-size: 14px;
-}
-.v6_2 {
   width: 100%;
   height: 1024px;
   background: url("/static/images/v13_432.png") no-repeat center center;
@@ -15,23 +14,27 @@ body {
   left: 0px;
   overflow: hidden;
 }
+
 .v58_20 {
   display: none;
 }
+
 .v8_12 {
   width: 100%;
   height: 150px;
-  background: rgba(113,1,23,1);
+  background: rgba(113, 1, 23, 1);
   opacity: 1;
   position: relative;
   top: 0px;
   left: 0px;
-  overflow: visible; /* Changed from hidden to visible */
+  overflow: visible;
+  /* Changed from hidden to visible */
   z-index: 10;
 }
+
 .v8_13 {
   width: 100%;
-  color: rgba(236,213,187,1);
+  color: rgba(236, 213, 187, 1);
   position: absolute;
   top: 30px;
   left: 50px;
@@ -43,15 +46,18 @@ body {
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+
 .name {
   color: #fff;
 }
+
 .name {
   color: #fff;
 }
+
 .v73_15 {
   width: 95px;
-  color: rgba(0,0,0,1);
+  color: rgba(0, 0, 0, 1);
   position: absolute;
   top: 512px;
   left: 82px;
@@ -61,6 +67,7 @@ body {
   opacity: 1;
   text-align: center;
 }
+
 /* Top navigation container */
 .top-right-nav {
   position: absolute;
@@ -70,6 +77,28 @@ body {
   align-items: center;
   gap: 20px;
   z-index: 1000;
+}
+
+.home-nav {
+  color: rgba(236, 213, 187, 1);
+  margin-top: 20px;
+  text-decoration: none;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 20px 40px;
+  background: rgba(236, 213, 187, 0.1);
+  border-radius: 25px;
+  border: 2px solid rgba(236, 213, 187, 0.3);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.home-nav:hover {
+  background: rgba(236, 213, 187, 0.2);
+  border-color: rgba(236, 213, 187, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .inbox-nav {
@@ -93,10 +122,11 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .v75_13 {
   width: 909px;
   height: 675px;
-  background: rgba(236,213,187,1);
+  background: rgba(236, 213, 187, 1);
   opacity: 1;
   position: absolute;
   top: 269px;
@@ -108,9 +138,10 @@ body {
   border-bottom-right-radius: 40px;
   overflow: hidden;
 }
+
 .v13_8 {
   width: 271px;
-  color: rgba(113,1,23,1);
+  color: rgba(113, 1, 23, 1);
   position: absolute;
   top: 311px;
   left: 158px;
@@ -120,9 +151,10 @@ body {
   opacity: 1;
   text-align: center;
 }
+
 .v13_513 {
   width: 73px;
-  color: rgba(77,70,70,1);
+  color: rgba(77, 70, 70, 1);
   position: absolute;
   top: 440px;
   left: 245px;
@@ -132,9 +164,10 @@ body {
   opacity: 1;
   text-align: left;
 }
+
 .v13_509 {
   width: 113px;
-  color: rgba(77,70,70,1);
+  color: rgba(77, 70, 70, 1);
   position: absolute;
   top: 360px;
   left: 245px;
@@ -144,15 +177,16 @@ body {
   opacity: 1;
   text-align: left;
 }
+
 .v13_511 {
   width: 400px;
   height: 120px;
-  background: rgba(255,255,255,1);
+  background: rgba(255, 255, 255, 1);
   opacity: 1;
   position: absolute;
   top: 460px;
   left: 325px;
-  border: 1px solid rgba(156,142,129,1);
+  border: 1px solid rgba(156, 142, 129, 1);
   border-radius: 8px;
   padding: 10px;
   font-family: Judson;
@@ -160,9 +194,10 @@ body {
   resize: none;
   outline: none;
 }
+
 .v13_505 {
   width: 113px;
-  color: rgba(77,70,70,1);
+  color: rgba(77, 70, 70, 1);
   position: absolute;
   top: 400px;
   left: 245px;
@@ -172,14 +207,15 @@ body {
   opacity: 1;
   text-align: left;
 }
+
 .v13_506 {
   width: 527px;
   height: 40px;
-  background: rgba(255,255,255,1);
+  background: rgba(255, 255, 255, 1);
   opacity: 1;
   position: absolute;
   left: 200px;
-  border: 1px solid rgba(156,142,129,1);
+  border: 1px solid rgba(156, 142, 129, 1);
   border-radius: 8px;
   padding: 8px 12px;
   font-family: Judson;
@@ -198,10 +234,11 @@ input[name="to"].v13_506 {
   left: 325px;
   width: 400px;
 }
+
 .v75_16 {
   width: 180px;
   height: 50px;
-  background: rgba(84,98,123,1);
+  background: rgba(84, 98, 123, 1);
   opacity: 1;
   position: absolute;
   top: 620px;
@@ -213,10 +250,11 @@ input[name="to"].v13_506 {
   overflow: hidden;
   cursor: pointer;
 }
+
 .v75_18 {
   width: 180px;
   height: 50px;
-  background: rgba(123,109,84,1);
+  background: rgba(123, 109, 84, 1);
   opacity: 1;
   position: absolute;
   top: 620px;
@@ -228,10 +266,11 @@ input[name="to"].v13_506 {
   overflow: hidden;
   cursor: pointer;
 }
+
 .v73_11 {
   width: 100%;
   height: 100%;
-  color: rgba(255,255,255,1);
+  color: rgba(255, 255, 255, 1);
   background: none;
   border: none;
   font-family: Lato;
@@ -241,10 +280,11 @@ input[name="to"].v13_506 {
   opacity: 1;
   text-align: center;
 }
+
 .v73_12 {
   width: 100%;
   height: 100%;
-  color: rgba(255,255,255,1);
+  color: rgba(255, 255, 255, 1);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -300,10 +340,14 @@ input[name="to"].v13_506 {
   border-color: rgba(236, 213, 187, 0.8);
 }
 
+
 .dropdown-menu {
-  position: fixed; /* Changed from absolute to fixed */
-  top: 90px; /* Position from top of viewport */
-  right: 30px; /* Position from right of viewport */
+  position: fixed;
+  /* Changed from absolute to fixed */
+  top: 90px;
+  /* Position from top of viewport */
+  right: 30px;
+  /* Position from right of viewport */
   background: rgba(236, 213, 187, 0.98);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -314,7 +358,8 @@ input[name="to"].v13_506 {
   transition: all 0.3s ease;
   border: 1px solid rgba(113, 1, 23, 0.2);
   backdrop-filter: blur(10px);
-  z-index: 99999; /* Very high z-index */
+  z-index: 99999;
+  /* Very high z-index */
 }
 
 .dropdown-menu.show {
@@ -350,25 +395,7 @@ input[name="to"].v13_506 {
   font-size: 14px;
   color: rgba(77, 70, 70, 1);
   font-weight: 500;
-}
-
-.logout-chip {
-  margin-left: auto;
-  padding: 6px 12px;
-  background: rgba(113, 1, 23, 0.9);
-  color: #fff;
-  text-decoration: none;
-  border-radius: 999px;
-  font-family: 'Lato', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  transition: background 0.2s ease, transform 0.1s ease;
-}
-
-.logout-chip:hover {
-  background: rgba(113, 1, 23, 1);
-  transform: translateY(-1px);
-}
+} 
 
 .dropdown-divider {
   height: 1px;
@@ -399,8 +426,8 @@ input[name="to"].v13_506 {
 
 /* Override Bootstrap form styles to match design */
 .form-control:focus {
-  border-color: rgba(113,1,23,0.5);
-  box-shadow: 0 0 0 0.2rem rgba(113,1,23,0.25);
+  border-color: rgba(113, 1, 23, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(113, 1, 23, 0.25);
 }
 
 .form-label {
@@ -414,38 +441,38 @@ input[name="to"].v13_506 {
     right: 20px;
     gap: 15px;
   }
-  
+
   .profile-icon {
     width: 48px;
     height: 48px;
   }
-  
+
   .inbox-nav {
     font-size: 16px;
     padding: 10px 20px;
   }
-  
+
   .dropdown-menu {
     min-width: 250px;
     right: -10px;
   }
-  
+
   .dropdown-header {
     padding: 15px;
   }
-  
+
   .dropdown-item {
     padding: 12px 15px;
   }
-  
+
   .card-body {
     padding: 2rem !important;
   }
-  
+
   .card-title {
     font-size: 2rem !important;
   }
-  
+
   .btn-lg {
     font-size: 1rem !important;
     padding: 0.75rem 1.5rem !important;
@@ -458,30 +485,30 @@ input[name="to"].v13_506 {
     right: 15px;
     gap: 10px;
   }
-  
+
   .profile-icon {
     width: 42px;
     height: 42px;
   }
-  
+
   .inbox-nav {
     font-size: 14px;
     padding: 8px 16px;
   }
-  
+
   .dropdown-menu {
     min-width: 200px;
     right: -20px;
   }
-  
+
   .card-body {
     padding: 1.5rem !important;
   }
-  
+
   .card-title {
     font-size: 1.75rem !important;
   }
-  
+
   .container {
     padding: 20px 15px !important;
   }
@@ -492,13 +519,32 @@ input[name="to"].v13_506 {
   display: none;
 }
 
-.v13_8, .v13_513, .v13_509, .v13_511, .v13_505, .v13_506, .v75_16, .v75_18, .v73_11, .v73_12 {
+.v13_8,
+.v13_513,
+.v13_509,
+.v13_511,
+.v13_505,
+.v13_506,
+.v75_16,
+.v75_18,
+.v73_11,
+.v73_12 {
   display: none;
 }
+
 .v75_13 {
   display: none;
 }
 
-.v13_8, .v13_513, .v13_509, .v13_511, .v13_505, .v13_506, .v75_16, .v75_18, .v73_11, .v73_12 {
+.v13_8,
+.v13_513,
+.v13_509,
+.v13_511,
+.v13_505,
+.v13_506,
+.v75_16,
+.v75_18,
+.v73_11,
+.v73_12 {
   display: none;
 }
