@@ -2,17 +2,18 @@
   box-sizing: border-box;
 }
 
+/* Changed body to be responsive and allow scrolling */
 body {
   font-size: 14px;
   width: 100%;
-  height: 1024px;
+  min-height: 100vh;                /* responsive full viewport */
   background: url("/static/images/v13_432.png") no-repeat center center;
   background-size: cover;
   opacity: 1;
   position: relative;
-  top: 0px;
-  left: 0px;
-  overflow: hidden;
+  top: 0;
+  left: 0;
+  overflow: auto;                   /* allow scrolling on small screens */
 }
 
 .v58_20 {
@@ -547,4 +548,146 @@ input[name="to"].v13_506 {
 .v73_11,
 .v73_12 {
   display: none;
+}
+
+/* ===== Index page form styles (moved from inline HTML) =====
+   Targets the card/form in [templates/index.html](templates/index.html)
+   This keeps HTML clean and centralizes responsive rules.
+*/
+.container.d-flex.justify-content-center.align-items-center > .card.shadow-lg {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 25px;
+  background: rgba(236, 213, 187, 1);
+  border: none;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+.container .card-body {
+  padding: 3rem; /* matches p-5 used in HTML */
+}
+
+.card-title {
+  color: rgba(113, 1, 23, 1);
+  font-family: "Judson", serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Form labels and controls */
+.form-label {
+  color: rgba(77, 70, 70, 1);
+  font-family: "Judson", serif;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.form-control,
+textarea.form-control {
+  border-radius: 10px;
+  border: 2px solid rgba(156, 142, 129, 1);
+  font-family: "Judson", serif;
+  padding: .75rem 1rem;
+}
+
+/* Bigger input variant */
+.form-control.form-control-lg {
+  padding: .85rem 1rem;
+  font-size: 1rem;
+}
+
+/* Buttons */
+.btn.btn-lg {
+  background-color: rgba(84, 98, 123, 1);
+  border: none;
+  border-radius: 13px;
+  color: white;
+  font-family: "Judson", serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: .6rem 1.25rem;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.btn.btn-lg + .btn.btn-lg {
+  background-color: rgba(123, 109, 84, 1); /* second button (DELETE) */
+}
+
+.btn.btn-lg:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* Make the layout comfortable on smaller screens */
+@media (max-width: 992px) {
+  .card-title {
+    font-size: 2.25rem;
+  }
+
+  .container .card-body {
+    padding: 2.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-title {
+    font-size: 2rem;
+  }
+
+  .container .card-body {
+    padding: 1.5rem;
+  }
+
+  .btn.btn-lg {
+    font-size: 1rem;
+    padding: .55rem .9rem;
+  }
+
+  .form-label {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-title {
+    font-size: 1.6rem;
+  }
+
+  .container .card-body {
+    padding: 1rem;
+  }
+
+  .form-control, textarea.form-control {
+    font-size: .95rem;
+    padding: .5rem .75rem;
+  }
+
+  .btn.btn-lg {
+    font-size: .95rem;
+    padding: .45rem .8rem;
+  }
+}
+
+/* Small tweak so the top heading (.v8_13) adapts on mobile */
+.v8_13 {
+  left: 1.5rem;
+  top: 20px;
+  font-size: 48px;
+}
+
+@media (max-width: 768px) {
+  .v8_13 {
+    font-size: 34px;
+    left: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .v8_13 {
+    font-size: 22px;
+    top: 18px;
+    left: 0.8rem;
+  }
 }

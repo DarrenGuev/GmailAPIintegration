@@ -2,6 +2,7 @@
 <title>EZ Mail - Student Mailer</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='popup.css') }}">
 <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css?family=Judson&display=swap" rel="stylesheet" />
 {% endblock %} {% block Body %}
@@ -82,7 +83,7 @@
           Student Mailer
         </h2>
 
-        <form action="/send" method="post">
+        <form id="sendForm" action="/send" method="post">
           <div class="mb-4">
             <label for="subject" class="form-label" style="
                 color: rgba(77, 70, 70, 1);
@@ -135,27 +136,44 @@
                 border: none;
                 border-radius: 13px;
                 color: white;
-                font-family: Lato;
+                font-family: Judson;
                 font-weight: bold;
                 font-size: 1.2rem;
               ">
               SEND
             </button>
-            <a href="/inbox" class="btn btn-lg px-4" style="
+            <a href="{{ url_for('index') }}" class="btn btn-lg px-4" style="
                 background-color: rgba(123, 109, 84, 1);
                 border: none;
                 border-radius: 13px;
                 color: white;
-                font-family: Lato;
+                font-family: Judson;
                 font-weight: bold;
                 font-size: 1.2rem;
-                text-decoration: none;
               ">
-              INBOX
+              DELETE
             </a>
+
           </div>
         </form>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal (hidden by default) -->
+<div id="successModal" class="modal" style="display:none;">
+  <div class="modal-content shadow-lg">
+    <button class="close-btn" onclick="closeModal()" aria-label="Close">&times;</button>
+    <h1 class="mb-3" style="font-family: Judson; font-weight: bold;">Email sent successfully!✅ </h1>
+    <p class="mb-4" style="font-family: Judson;">Your message was sent to: <b id="successEmail"></b></p>
+    <div class="d-grid gap-2">
+      <a href="/inbox" class="btn mb-2" style="background-color: #54627B; color: white; border-radius: 13px; font-family: Judson; font-weight: bold;">
+        📥 View Inbox
+      </a>
+      <a href="/" class="btn" style="background-color: #7B6D54; color: white; border-radius: 13px; font-family: Judson; font-weight: bold;">
+        ✉ Send Another Email
+      </a>
     </div>
   </div>
 </div>
@@ -189,5 +207,31 @@
       }
     }
   };
+
+document.getElementById('sendForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const formData = new FormData(form);
+
+  fetch(form.action, {
+    method: 'POST',
+    body: formData,
+    credentials: 'same-origin'
+  })
+  .then(response => response.text())
+  .then(html => {
+    // Try to extract the recipient email from the form
+    const toEmail = formData.get('to');
+    document.getElementById('successEmail').textContent = toEmail;
+    document.getElementById('successModal').style.display = 'block';
+  })
+  .catch(err => {
+    alert('Failed to send email.');
+  });
+});
+
+  function closeModal() {
+    document.getElementById("successModal").style.display = "none";
+  }
 </script>
 {% endblock %}

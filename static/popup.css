@@ -1,0 +1,106 @@
+/* Success modal styles */
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background: rgba(255,255,255,0.1); /* semi-transparent for blur effect */
+  backdrop-filter: blur(8px); /* blur everything behind the modal */
+}
+.modal-content {
+  background: rgba(255,255,255,0.95); /* slightly see-through */
+  margin: 10% auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+  position: relative;
+}
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  background: none;
+  color: #333;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Keep modal hidden by default via CSS if no inline is set;
+   the template currently uses inline style="display:none;" so JS toggles it.
+   These rules style the modal when visible (and make it responsive).
+*/
+.modal {
+  /* keep modal layout prepared; visibility controlled by inline style or by adding a 'show' class */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0,0,0,0.25);        /* dim background for accessibility */
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-content {
+  background: rgba(255,255,255,0.98);
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.18);
+  position: relative;
+  transform: translateY(0);
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+/* If your JS adds a 'show' class, ensure it displays properly */
+.modal.show,
+.modal[style*="display: block"] { /* also help cases where JS sets inline display */
+  display: flex !important;
+}
+
+/* close button responsiveness */
+.close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: none;
+  background: none;
+  color: #333;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Smaller screens */
+@media (max-width: 480px) {
+  .modal-content {
+    max-width: 95%;
+    padding: 1rem;
+  }
+
+  .modal {
+    padding: .75rem;
+  }
+
+  .close-btn {
+    font-size: 1.2rem;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}
