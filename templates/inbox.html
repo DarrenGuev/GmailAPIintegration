@@ -66,8 +66,8 @@
     <div class="card shadow-lg inbox-card mx-auto">
       <!-- Orange rounded header like screenshot -->
       <div class="inbox-header d-flex align-items-center justify-content-between px-4">
-        <div class="header-left">Inbox</div>
-        <div class="header-center" id="selectedSubject">(Select a message)</div>
+        <div class="header-center">Inbox</div>
+        <!-- <div class="header-center" id="selectedSubject">(Select a message)</div> -->
       </div>
 
       <div class="card-body p-0">
@@ -80,11 +80,12 @@
                 {% for mail in emails %}
                 <button type="button" class="list-group-item list-group-item-action email-row"
                   data-name="{{ mail.name }}" data-email="{{ mail.email }}" data-date="{{ mail.date }}"
-                  data-subject="{{ mail.name }}'s message">
+                  data-subject="{{ mail.subject }}" data-body="{{ mail.body_text | e }}">
                   <div class="small text-muted">From:</div>
                   <div class="fw-bold">{{ mail.name }}</div>
                   <div class="small text-muted mt-1">Subject:</div>
-                  <div class="text-truncate">{{ mail.email }}</div>
+                  <div class="text-truncate">{{ mail.subject }}</div>
+                  <div class="small text-muted text-truncate">{{ mail.body_text }}</div>
                 </button>
                 {% endfor %}
                 {% else %}
@@ -103,7 +104,7 @@
                 <div class="text-muted small" id="previewDate"></div>
                 <hr>
               </div>
-              <div class="preview-body flex-grow-1" id="previewBody">
+              <div class="preview-body flex-grow-1" id="previewBody" style="white-space: pre-wrap;">
                 <p class="text-muted">Select a message from the left to view its details.</p>
               </div>
 
@@ -164,12 +165,14 @@
         const from = this.dataset.name || '';
         const email = this.dataset.email || '';
         const date = this.dataset.date || '';
-        const subject = this.dataset.subject || '(no subject)';
+  const subject = this.dataset.subject || '(no subject)';
+  const body = this.dataset.body || '';
 
         previewSubject.textContent = subject;
         previewFrom.innerHTML = '<strong>From:</strong> ' + from + ' ' + (email ? (' ' + email) : '');
         previewDate.textContent = date;
-        previewBody.innerHTML = '<p class="mb-0">No preview available. To show full message bodies update <code>app.py</code> to fetch and pass message text into the template.</p>';
+        // Render plain text safely with preserved newlines
+        previewBody.textContent = body || '(no content)';
         selectedSubject.textContent = subject;
       });
     });
