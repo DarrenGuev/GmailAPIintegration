@@ -4,6 +4,8 @@ import base64
 import json
 from datetime import datetime
 from email.mime.text import MIMEText
+import re
+import html as html_lib
 
 # google API imports
 from google.auth.transport.requests import Request
@@ -48,6 +50,89 @@ def get_gmail_service():
         }
     
     return build('gmail', 'v1', credentials=credentials)
+
+def _decode_base64url(data: str) -> str:
+    """Decode base64url data to utf-8 text safely."""
+    if not data:
+        return ""
+    # Gmail uses URL-safe base64 without padding
+    missing = (-len(data)) % 4
+    if missing:
+        data = data + ("=" * missing)
+    try:
+        return base64.urlsafe_b64decode(data).decode('utf-8', errors='replace')
+    except Exception:
+        # As a fallback, try standard b64decode
+        return base64.b64decode(data + ("=" * missing)).decode('utf-8', errors='replace')
+
+def _strip_html_to_text(html: str) -> str:
+    """Convert HTML to readable plain text (basic, safe)."""
+    if not html:
+        return ""
+    # Remove script/style blocks
+    text = re.sub(r'(?is)<(script|style)[^>]*>.*?</\1>', '', html)
+    # Replace <br> and </p> with line breaks
+    text = re.sub(r'(?i)<br\s*/?>', '\n', text)
+    text = re.sub(r'(?i)</p\s*>', '\n\n', text)
+    # Remove all other tags
+    text = re.sub(r'<[^>]+>', '', text)
+    # Unescape HTML entities
+    text = html_lib.unescape(text)
+    # Normalize whitespace
+    return text.strip()
+
+def extract_message_plain_text(payload: dict) -> str:
+    """Extract the best-effort plain text body from a Gmail message payload.
+
+    Preference order:
+    1) text/plain
+    2) text/html converted to plain text
+    3) payload.body.data (if present)
+    """
+    if not payload:
+        return ""
+
+    # If the payload has a direct body data
+    body = payload.get('body', {})
+    data = body.get('data')
+    if data:
+        mime = payload.get('mimeType', '')
+        decoded = _decode_base64url(data)
+        if mime.lower() == 'text/html':
+            return _strip_html_to_text(decoded)
+        # Treat everything else as text
+        return decoded
+
+    parts = payload.get('parts', [])
+    if not parts:
+        return ""
+
+    # Helper to collect parts
+    plain_candidates = []
+    html_candidates = []
+
+    def walk(parts_list):
+        for p in parts_list:
+            mime = (p.get('mimeType') or '').lower()
+            pbody = p.get('body', {})
+            pdata = pbody.get('data')
+            pparts = p.get('parts')
+            if pparts:
+                walk(pparts)
+            if pdata:
+                decoded = _decode_base64url(pdata)
+                if mime == 'text/plain':
+                    plain_candidates.append(decoded)
+                elif mime == 'text/html':
+                    html_candidates.append(decoded)
+
+    walk(parts)
+
+    if plain_candidates:
+        return plain_candidates[0]
+    if html_candidates:
+        return _strip_html_to_text(html_candidates[0])
+    return ""
 
 def create_message(to, subject, message_text):
     """Create a message for an email"""
@@ -193,53 +278,105 @@ def inbox():
             flash("Gmail service not available. Please log in again.", "error")
             return redirect(url_for('login'))
         
-        # para makuha yung list ng messages
-        results = service.users().messages().list(userId='me', maxResults=10).execute()
+        # Get list of messages in inbox
+        results = service.users().messages().list(userId='me', maxResults=10, labelIds=['INBOX']).execute()
         messages = results.get('messages', [])
         
         for msg in messages:
-            #details
-            message = service.users().messages().get(userId='me', id=msg['id']).execute()
+            # Get message details
+            message = service.users().messages().get(userId='me', id=msg['id'], format='full').execute()
             
             # Extract headers
             payload = message['payload']
             headers = payload.get('headers', [])
             
-            sender = next((h['value'] for h in headers if h['name'] == 'From'), 'Unknown')
+            # For inbox, we want to show who sent the email TO us (From header)
+            sender = next((h['value'] for h in headers if h['name'] == 'From'), 'Unknown Sender')
             subject = next((h['value'] for h in headers if h['name'] == 'Subject'), 'No Subject')
             date_header = next((h['value'] for h in headers if h['name'] == 'Date'), '')
             
-            # Parse sender
-            if '<' in sender and '>' in sender:
-                name_part = sender.split('<')[0].strip().strip('"')
-                email_part = sender.split('<')[1].split('>')[0]
-                sender_name = name_part if name_part else email_part
-                sender_email = f"<{email_part}>"
-            else:
-                sender_name = sender
-                sender_email = ""
+            # Parse sender information more reliably
+            sender_name = "Unknown Sender"
+            sender_email = ""
             
-            # Parse date
-            try:
-                # Simple date parsing - you might want to use dateutil.parser for better parsing
-                if date_header:
-                    date_str = date_header[:25] if len(date_header) > 25 else date_header
+            if sender and sender != 'Unknown Sender':
+                # Handle different sender formats:
+                # "John Doe <john@example.com>"
+                # "john@example.com"
+                # "<john@example.com>"
+                if '<' in sender and '>' in sender:
+                    # Format: "Name <email@domain.com>"
+                    email_match = re.search(r'<([^>]+)>', sender)
+                    if email_match:
+                        email_part = email_match.group(1)
+                        name_part = sender.split('<')[0].strip().strip('"').strip()
+                        
+                        if name_part:
+                            sender_name = name_part
+                        else:
+                            # If no name part, use the part before @ in email
+                            sender_name = email_part.split('@')[0] if '@' in email_part else email_part
+                        
+                        sender_email = f"<{email_part}>"
                 else:
-                    date_str = "Unknown"
+                    # Format: just email or just name
+                    if '@' in sender:
+                        # It's an email address
+                        sender_name = sender.split('@')[0]  # Use part before @ as name
+                        sender_email = f"<{sender}>"
+                    else:
+                        # It's just a name
+                        sender_name = sender
+                        sender_email = ""
+            
+            # Parse date more reliably
+            try:
+                if date_header:
+                    # Try to parse the date and format it nicely
+                    from email.utils import parsedate_to_datetime
+                    parsed_date = parsedate_to_datetime(date_header)
+                    date_str = parsed_date.strftime('%b %d, %Y %I:%M %p')
+                else:
+                    date_str = "Unknown Date"
             except Exception:
-                date_str = date_header
+                # Fallback to truncated original date
+                date_str = date_header[:25] if len(date_header) > 25 else date_header or "Unknown Date"
+            
+            # Extract plain text body
+            body_text = extract_message_plain_text(payload)
+            if not body_text:
+                body_text = message.get('snippet', 'No preview available')
+            
+            # Limit body text length for display
+            if len(body_text) > 200:
+                body_text = body_text[:200] + "..."
             
             emails.append({
                 "name": sender_name,
                 "email": sender_email,
                 "date": date_str,
-                "subject": subject
+                "subject": subject,
+                "body_text": body_text
             })
             
     except HttpError as error:
-        emails.append({"name": "System", "email": "", "date": f"Gmail API error: {error}"})
+        flash(f"Gmail API error: {error}", "error")
+        emails.append({
+            "name": "System Error", 
+            "email": "", 
+            "date": "Now", 
+            "subject": "Gmail API Error",
+            "body_text": f"Error fetching emails: {error}"
+        })
     except Exception as e:
-        emails.append({"name": "System", "email": "", "date": f"Error: {str(e)}"})
+        flash(f"Error fetching emails: {str(e)}", "error")
+        emails.append({
+            "name": "System Error", 
+            "email": "", 
+            "date": "Now", 
+            "subject": "Application Error",
+            "body_text": f"Error: {str(e)}"
+        })
 
     return render_template("inbox.html", emails=emails)
 
