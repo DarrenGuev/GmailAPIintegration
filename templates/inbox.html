@@ -67,7 +67,6 @@
       <!-- Orange rounded header like screenshot -->
       <div class="inbox-header d-flex align-items-center justify-content-between px-4">
         <div class="header-center">Inbox</div>
-        <!-- <div class="header-center" id="selectedSubject">(Select a message)</div> -->
       </div>
 
       <div class="card-body p-0">
@@ -104,13 +103,59 @@
                 <div class="text-muted small" id="previewDate"></div>
                 <hr>
               </div>
+              
+              <!-- Message Content Area -->
               <div class="preview-body flex-grow-1" id="previewBody" style="white-space: pre-wrap;">
                 <p class="text-muted">Select a message from the left to view its details.</p>
               </div>
 
+              <!-- Reply Interface (hidden by default) -->
+              <div id="replyInterface" class="reply-interface" style="display: none;">
+                <div class="reply-header mb-3" style="background: rgba(113, 1, 23, 1); color: white; padding: 15px; border-radius: 10px 10px 0 0; margin: -15px -15px 15px -15px;">
+                  <h6 class="mb-0" style="font-family: 'Judson', serif; font-weight: bold;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+                      <path d="M9 17l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reply to: <span id="inlineReplyToName">Sender</span>
+                  </h6>
+                </div>
+                
+                <form id="inlineReplyForm" action="/send" method="post">
+                  <!-- Hidden inputs for recipient and subject -->
+                  <input type="hidden" id="inlineReplyToEmail" name="to" value="">
+                  <input type="hidden" id="inlineReplySubject" name="subject" value="">
+                  
+                  <!-- Only show the message textarea -->
+                  <div class="mb-3">
+                    <label for="inlineReplyMessage" class="form-label" style="color: rgba(77, 70, 70, 1); font-family: 'Judson', serif; font-weight: 500; font-size: 16px;">
+                      Your Reply:
+                    </label>
+                    <textarea class="form-control" id="inlineReplyMessage" name="message" rows="8" 
+                      placeholder="Type your reply here..." required 
+                      style="border-radius: 8px; border: 2px solid rgba(156, 142, 129, 1); font-family: 'Judson', serif; resize: vertical; background: white; font-size: 14px;">
+                    </textarea>
+                  </div>
+                  
+                  <div class="d-flex gap-2 justify-content-end">
+                    <button type="button" class="btn btn-secondary btn-sm" id="cancelReplyBtn"
+                      style="border-radius: 8px; padding: 8px 16px; font-family: 'Lato', sans-serif; font-weight: bold; font-size: 12px;">
+                      Cancel
+                    </button>
+                    <button type="submit" class="btn btn-sm" 
+                      style="background-color: rgba(84, 98, 123, 1); color: white; border: none; border-radius: 8px; padding: 8px 16px; font-family: 'Lato', sans-serif; font-weight: bold; font-size: 12px;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 4px;">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      Send Reply
+                    </button>
+                  </div>
+                </form>
+              </div>
+
               <div class="preview-actions mt-3 d-flex gap-2">
                 <button class="btn btn-sm btn-outline-primary" id="replyBtn">Reply</button>
-                <button class="btn btn-sm btn-outline-secondary" id="deleteBtn">Delete</button>
+                <!-- <button class="btn btn-sm btn-outline-secondary" id="deleteBtn">Delete</button> -->
                 <a href="/" class="btn btn-sm btn-outline-secondary ms-auto">← Back</a>
               </div>
             </div>
@@ -124,6 +169,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  let currentEmailData = {};
+
   function toggleInboxDropdown() {
     document.getElementById("InboxDropdown").classList.toggle("show");
   }
@@ -140,7 +187,6 @@
     }
   });
 
-
   window.addEventListener('click', function (event) {
     const dropdown = document.getElementById("profileDropdown");
     if (!event.target.closest('.profile-container')) {
@@ -148,14 +194,16 @@
     }
   });
 
-  // Client-side selection handling to mimic the Inbox.png behaviour
+  // Client-side selection handling
   document.addEventListener('DOMContentLoaded', function () {
     const rows = document.querySelectorAll('.email-row');
     const previewSubject = document.getElementById('previewSubject');
     const previewFrom = document.getElementById('previewFrom');
     const previewDate = document.getElementById('previewDate');
     const previewBody = document.getElementById('previewBody');
-    const selectedSubject = document.getElementById('selectedSubject');
+    const replyBtn = document.getElementById('replyBtn');
+    const replyInterface = document.getElementById('replyInterface');
+    const cancelReplyBtn = document.getElementById('cancelReplyBtn');
 
     rows.forEach(row => {
       row.addEventListener('click', function () {
@@ -165,17 +213,67 @@
         const from = this.dataset.name || '';
         const email = this.dataset.email || '';
         const date = this.dataset.date || '';
-  const subject = this.dataset.subject || '(no subject)';
-  const body = this.dataset.body || '';
+        const subject = this.dataset.subject || '(no subject)';
+        const body = this.dataset.body || '';
 
+        // Store current email data for reply functionality
+        currentEmailData = {
+          name: from,
+          email: email.replace(/[<>]/g, ''), // Remove < > brackets
+          subject: subject,
+          originalBody: body
+        };
+
+        // Hide reply interface and show message content
+        replyInterface.style.display = 'none';
+        previewBody.innerHTML = `<p>${body || '(no content)'}</p>`;
+        
         previewSubject.textContent = subject;
         previewFrom.innerHTML = '<strong>From:</strong> ' + from + ' ' + (email ? (' ' + email) : '');
         previewDate.textContent = date;
-        // Render plain text safely with preserved newlines
-        previewBody.textContent = body || '(no content)';
-        selectedSubject.textContent = subject;
+        
+        // Enable reply button when an email is selected
+        replyBtn.disabled = false;
       });
     });
+
+    // Reply button click handler
+    replyBtn.addEventListener('click', function() {
+      if (!currentEmailData.email) {
+        alert('Please select an email to reply to.');
+        return;
+      }
+
+      // Hide the message content and show reply interface
+      previewBody.innerHTML = '';
+      replyInterface.style.display = 'block';
+
+      // Populate hidden form fields with current email data
+      document.getElementById('inlineReplyToName').textContent = currentEmailData.name;
+      document.getElementById('inlineReplyToEmail').value = currentEmailData.email;
+      
+      // Add "Re: " prefix if not already present
+      let replySubject = currentEmailData.subject;
+      if (!replySubject.toLowerCase().startsWith('re:')) {
+        replySubject = 'Re: ' + replySubject;
+      }
+      document.getElementById('inlineReplySubject').value = replySubject;
+      
+      // Clear the reply message textarea and focus it
+      const textarea = document.getElementById('inlineReplyMessage');
+      textarea.value = '';
+      textarea.focus();
+    });
+
+    // Cancel reply button handler
+    cancelReplyBtn.addEventListener('click', function() {
+      // Hide reply interface and show original message content
+      replyInterface.style.display = 'none';
+      previewBody.innerHTML = `<p>${currentEmailData.originalBody || '(no content)'}</p>`;
+    });
+
+    // Initially disable reply button
+    replyBtn.disabled = true;
   });
 </script>
 {% endblock %}
