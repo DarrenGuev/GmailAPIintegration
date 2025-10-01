@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+/* Responsive design variables */
+:root {
+  --header-height: 72px;
+}
+
 /* Changed body to be responsive and allow scrolling */
 body {
   font-size: 14px;
@@ -22,30 +27,27 @@ body {
 
 .v8_12 {
   width: 100%;
-  height: 150px;
+  min-height: var(--header-height);
   background: rgba(113, 1, 23, 1);
-  opacity: 1;
   position: relative;
-  top: 0px;
-  left: 0px;
-  overflow: visible;
-  /* Changed from hidden to visible */
+  display: flex;
+  align-items: center;              /* vertically center brand and nav */
+  justify-content: space-between;   /* brand on left, nav on right */
+  padding: 0 clamp(12px, 3vw, 24px);
   z-index: 10;
 }
 
 .v8_13 {
-  width: 100%;
   color: rgba(236, 213, 187, 1);
-  position: absolute;
-  top: 30px;
-  left: 50px;
-  font-family: Lato;
+  position: static;                 /* allow flex centering */
+  margin: 0;                        /* remove extra vertical offset */
+  margin-left: clamp(4px, 2vw, 12px);
+  font-family: Lato, sans-serif;
   font-weight: 900;
-  font-size: 48px;
-  opacity: 1;
-  text-align: left;
+  font-size: clamp(20px, 3vw + 14px, 36px); /* scale across devices */
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
+  line-height: 1.1;
 }
 
 .name {
@@ -71,23 +73,27 @@ body {
 
 /* Top navigation container */
 .top-right-nav {
-  position: absolute;
-  top: 20px;
-  right: 30px;
+  position: static;                 /* sit inside header flow */
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: clamp(8px, 2vw, 16px);
+  margin-left: auto;
   z-index: 1000;
+}
+
+.home-container,
+.Inbox-container,
+.profile-container {
+  position: relative;               /* anchor dropdowns */
 }
 
 .home-nav {
   color: rgba(236, 213, 187, 1);
-  margin-top: 20px;
   text-decoration: none;
   font-family: 'Lato', sans-serif;
   font-weight: 700;
-  font-size: 18px;
-  padding: 20px 40px;
+  font-size: clamp(14px, 1.2vw + 10px, 18px);
+  padding: clamp(6px, 1.2vw, 10px) clamp(12px, 2.5vw, 20px);
   background: rgba(236, 213, 187, 0.1);
   border-radius: 25px;
   border: 2px solid rgba(236, 213, 187, 0.3);
@@ -104,12 +110,11 @@ body {
 
 .inbox-nav {
   color: rgba(236, 213, 187, 1);
-  margin-top: 20px;
   text-decoration: none;
   font-family: 'Lato', sans-serif;
   font-weight: 700;
-  font-size: 18px;
-  padding: 20px 40px;
+  font-size: clamp(14px, 1.2vw + 10px, 18px);
+  padding: clamp(6px, 1.2vw, 10px) clamp(12px, 2.5vw, 20px);
   background: rgba(236, 213, 187, 0.1);
   border-radius: 25px;
   border: 2px solid rgba(236, 213, 187, 0.3);
@@ -299,15 +304,13 @@ input[name="to"].v13_506 {
 
 /* Profile Icon Styles */
 .profile-container {
-  position: relative;
   z-index: 9999;
 }
 
 .profile-icon {
-  width: 75px;
-  height: 75px;
+  width: clamp(40px, 6vw, 56px);
+  height: clamp(40px, 6vw, 56px);
   background: rgba(236, 213, 187, 0.9);
-  margin-top: 15px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -343,12 +346,9 @@ input[name="to"].v13_506 {
 
 
 .dropdown-menu {
-  position: fixed;
-  /* Changed from absolute to fixed */
-  top: 90px;
-  /* Position from top of viewport */
-  right: 30px;
-  /* Position from right of viewport */
+  position: absolute;               /* appear under its trigger */
+  top: calc(100% + 10px);
+  right: 0;
   background: rgba(236, 213, 187, 0.98);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -437,26 +437,25 @@ input[name="to"].v13_506 {
 
 /* Ensure card responsiveness */
 @media (max-width: 768px) {
+  :root { --header-height: 56px; }
+
+  .v8_12 { padding: 0 16px; }
+
   .top-right-nav {
-    top: 15px;
-    right: 20px;
-    gap: 15px;
+    gap: 12px;
   }
 
   .profile-icon {
-    width: 48px;
-    height: 48px;
+    width: clamp(38px, 7vw, 48px);
+    height: clamp(38px, 7vw, 48px);
   }
 
   .inbox-nav {
     font-size: 16px;
-    padding: 10px 20px;
+    padding: 8px 16px;
   }
 
-  .dropdown-menu {
-    min-width: 250px;
-    right: -10px;
-  }
+  .dropdown-menu { min-width: 240px; }
 
   .dropdown-header {
     padding: 15px;
@@ -481,15 +480,17 @@ input[name="to"].v13_506 {
 }
 
 @media (max-width: 480px) {
+  :root { --header-height: 52px; }
+
+  .v8_12 { padding: 0 12px; }
+
   .top-right-nav {
-    top: 10px;
-    right: 15px;
     gap: 10px;
   }
 
   .profile-icon {
-    width: 42px;
-    height: 42px;
+    width: 38px;
+    height: 38px;
   }
 
   .inbox-nav {
@@ -507,7 +508,7 @@ input[name="to"].v13_506 {
   }
 
   .card-title {
-    font-size: 1.75rem !important;
+    font-size: 1.6rem !important;
   }
 
   .container {
@@ -670,24 +671,12 @@ textarea.form-control {
   }
 }
 
-/* Small tweak so the top heading (.v8_13) adapts on mobile */
-.v8_13 {
-  left: 1.5rem;
-  top: 20px;
-  font-size: 48px;
+/* Responsive scaling for Student Mailer title and large buttons */
+.card-title {
+  font-size: clamp(1.4rem, 2.5vw + 0.8rem, 2.2rem) !important;
 }
 
-@media (max-width: 768px) {
-  .v8_13 {
-    font-size: 34px;
-    left: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .v8_13 {
-    font-size: 22px;
-    top: 18px;
-    left: 0.8rem;
-  }
+.btn.btn-lg {
+  font-size: clamp(0.95rem, 1.2vw + 0.5rem, 1.1rem) !important;
+  padding: .55rem 1.1rem !important;
 }
